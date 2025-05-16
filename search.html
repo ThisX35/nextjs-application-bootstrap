@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Durchsuchen Sie CannaBlogSpot.de nach Informationen zu Cannabis-Anbau, Pflege und medizinischer Anwendung" />
+    <meta name="keywords" content="Cannabis, Suche, Anbau, Pflege, Medizin" />
+    <title>Suche - CannaBlogSpot.de</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+</head>
+<body>
+    <header>
+        <h1>Suche</h1>
+        <button class="hamburger">☰</button>
+        <nav>
+            <ul>
+                <li><a href="index.html">Startseite</a></li>
+                <li><a href="anbauanleitungen.html">Anbauanleitungen</a></li>
+                <li><a href="pflege.html">Pflege und Wartung</a></li>
+                <li><a href="samenbanken.html">Samenbanken & Stecklingsverkäufer</a></li>
+                <li><a href="ressourcen.html">Ressourcen & Tools</a></li>
+                <li><a href="community.html">Community-Bereich</a></li>
+                <li><a href="rechtliches.html">Rechtliche Aspekte</a></li>
+                <li><a href="medizinische_spekt.html">Medizinisches Spektrum</a></li>
+                <li><a href="erntemethoden.html">Erntemethoden</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <nav aria-label="Breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="index.html">Startseite</a></li>
+                <li>Suche</li>
+            </ol>
+        </nav>
+        
+        <section class="search-section">
+            <form id="searchForm" class="search-form">
+                <input type="text" id="searchInput" placeholder="Suchbegriff eingeben..." required>
+                <button type="submit" class="button">Suchen</button>
+            </form>
+            
+            <div id="searchResults" class="search-results">
+                <!-- Results will be populated by JavaScript -->
+            </div>
+        </section>
+    </main>
+    <button id="topBtn" title="Nach oben">↑</button>
+    <footer>
+        <p>© 2024 CannaBlogSpot.de. Alle Rechte vorbehalten.</p>
+    </footer>
+    <script>
+        // Mobile Menu Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const nav = document.querySelector('nav ul');
+        
+        hamburger.addEventListener('click', () => {
+            nav.classList.toggle('show');
+        });
+
+        // Back to Top Button
+        const topBtn = document.getElementById('topBtn');
+        
+        window.onscroll = function() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                topBtn.style.display = 'block';
+            } else {
+                topBtn.style.display = 'none';
+            }
+        };
+        
+        topBtn.addEventListener('click', () => {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        });
+
+        // Search Functionality
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        // Get search query from URL if present
+        const urlParams = new URLSearchParams(window.location.search);
+        const queryParam = urlParams.get('q');
+        if (queryParam) {
+            searchInput.value = queryParam;
+            performSearch(queryParam);
+        }
+
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const query = searchInput.value.trim();
+            if (query) {
+                // Update URL with search query
+                const newUrl = `${window.location.pathname}?q=${encodeURIComponent(query)}`;
+                window.history.pushState({ path: newUrl }, '', newUrl);
+                performSearch(query);
+            }
+        });
+
+        function performSearch(query) {
+            // Simulate search results (in a real implementation, this would query a backend)
+            const demoResults = [
+                {
+                    title: 'Anbau aus Samen: Vollständiger Guide',
+                    excerpt: 'Detaillierte Schritt-für-Schritt-Anleitung für den erfolgreichen Start mit Cannabis-Samen.',
+                    url: 'anbauanleitungen.html#samen'
+                },
+                {
+                    title: 'Pflege-Tipps: Krankheiten und Schädlinge',
+                    excerpt: 'Lernen Sie, wie Sie Ihre Pflanzen vor häufigen Krankheiten und Schädlingen schützen.',
+                    url: 'pflege.html'
+                }
+                // Add more demo results as needed
+            ];
+
+            // Display results
+            searchResults.innerHTML = `
+                <h2>Suchergebnisse für "${query}"</h2>
+                ${demoResults.map(result => `
+                    <article class="search-result">
+                        <h3><a href="${result.url}">${result.title}</a></h3>
+                        <p>${result.excerpt}</p>
+                    </article>
+                `).join('')}
+            `;
+        }
+    </script>
+</body>
+</html>
